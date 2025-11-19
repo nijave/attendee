@@ -5,6 +5,7 @@ import uuid
 from typing import Dict, Optional
 
 import jsonpatch
+import yaml
 from django.conf import settings
 from kubernetes import client, config
 
@@ -347,6 +348,8 @@ class BotPodCreator:
         )
 
         bot_pod_spec_data = self.apply_spec_to_bot_pod(bot_pod)
+        logger.info("\n%s",
+                    yaml.safe_dump(self.api_client.sanitize_for_serialization(bot_pod_spec_data), sort_keys=False))
 
         if add_webpage_streamer:
             # Create specific labels for the webpage streamer pod
